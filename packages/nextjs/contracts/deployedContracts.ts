@@ -6,17 +6,11 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    CollaborativeArtSFT: {
-      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+    Kudos: {
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
       abi: [
         {
-          inputs: [
-            {
-              internalType: "string",
-              name: "baseURI",
-              type: "string",
-            },
-          ],
+          inputs: [],
           stateMutability: "nonpayable",
           type: "constructor",
         },
@@ -123,6 +117,31 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [],
+          name: "EmptyStory",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "InsufficientBalance",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "InvalidMaxSupply",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MaxSupplyReached",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "NotTokenHolder",
+          type: "error",
+        },
+        {
           inputs: [
             {
               internalType: "address",
@@ -142,6 +161,26 @@ const deployedContracts = {
             },
           ],
           name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PropagationDisabled",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "ReentrancyGuardReentrantCall",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "SelfPropagation",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "TransferDisabled",
           type: "error",
         },
         {
@@ -186,9 +225,9 @@ const deployedContracts = {
             },
             {
               indexed: false,
-              internalType: "uint256",
-              name: "supply",
-              type: "uint256",
+              internalType: "string",
+              name: "story",
+              type: "string",
             },
             {
               indexed: false,
@@ -196,8 +235,14 @@ const deployedContracts = {
               name: "maxSupply",
               type: "uint256",
             },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
           ],
-          name: "ArtworkCreated",
+          name: "KudosCreated",
           type: "event",
         },
         {
@@ -212,23 +257,29 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "addedBy",
+              name: "from",
               type: "address",
             },
             {
               indexed: true,
               internalType: "address",
-              name: "newOwner",
+              name: "to",
               type: "address",
             },
             {
               indexed: false,
               internalType: "uint256",
-              name: "shares",
+              name: "generation",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
               type: "uint256",
             },
           ],
-          name: "CoOwnerAdded",
+          name: "KudosPropagated",
           type: "event",
         },
         {
@@ -243,17 +294,29 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "account",
+              name: "from",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "to",
               type: "address",
             },
             {
               indexed: false,
-              internalType: "bool",
-              name: "canAdd",
-              type: "bool",
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
             },
           ],
-          name: "OwnerAddPermissionChanged",
+          name: "KudosTransferred",
           type: "event",
         },
         {
@@ -273,6 +336,31 @@ const deployedContracts = {
             },
           ],
           name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "bool",
+              name: "canPropagate",
+              type: "bool",
+            },
+            {
+              indexed: false,
+              internalType: "bool",
+              name: "transferable",
+              type: "bool",
+            },
+          ],
+          name: "PropagationSettingsUpdated",
           type: "event",
         },
         {
@@ -371,62 +459,6 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "newOwner",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "shares",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "givePermission",
-              type: "bool",
-            },
-          ],
-          name: "addCoOwner",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "address[]",
-              name: "newOwners",
-              type: "address[]",
-            },
-            {
-              internalType: "uint256[]",
-              name: "sharesPerOwner",
-              type: "uint256[]",
-            },
-            {
-              internalType: "bool[]",
-              name: "permissions",
-              type: "bool[]",
-            },
-          ],
-          name: "addMultipleCoOwners",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
               internalType: "address",
               name: "account",
               type: "address",
@@ -475,75 +507,37 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "canAddNewOwners",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "canAddOwners",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "initialSupply",
-              type: "uint256",
+              internalType: "string",
+              name: "story",
+              type: "string",
             },
             {
               internalType: "uint256",
-              name: "_maxSupply",
+              name: "maxSupply",
               type: "uint256",
             },
             {
-              internalType: "uint256",
-              name: "_minSharesForPermission",
-              type: "uint256",
+              internalType: "address[]",
+              name: "initialRecipients",
+              type: "address[]",
             },
             {
               internalType: "string",
-              name: "customUri",
+              name: "visualSymbol",
               type: "string",
             },
+            {
+              internalType: "bool",
+              name: "_canPropagate",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "_transferable",
+              type: "bool",
+            },
           ],
-          name: "createArtwork",
+          name: "createKudos",
           outputs: [
             {
               internalType: "uint256",
@@ -557,17 +551,121 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
               internalType: "uint256",
               name: "",
               type: "uint256",
             },
           ],
-          name: "creators",
+          name: "creatorTokens",
           outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
             {
               internalType: "address",
               name: "",
               type: "address",
+            },
+          ],
+          name: "firstReceiptTime",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "creator",
+              type: "address",
+            },
+          ],
+          name: "getCreatorTokens",
+          outputs: [
+            {
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getCurrentTokenId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "holder",
+              type: "address",
+            },
+          ],
+          name: "getHolderGeneration",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "holder",
+              type: "address",
+            },
+          ],
+          name: "getHolderTokens",
+          outputs: [
+            {
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
             },
           ],
           stateMutability: "view",
@@ -581,26 +679,180 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "getTokenInfo",
+          name: "getKudosMetadata",
           outputs: [
             {
+              components: [
+                {
+                  internalType: "string",
+                  name: "story",
+                  type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "creator",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "maxSupply",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "currentSupply",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "createdAt",
+                  type: "uint256",
+                },
+                {
+                  internalType: "bool",
+                  name: "transferable",
+                  type: "bool",
+                },
+                {
+                  internalType: "bool",
+                  name: "canPropagate",
+                  type: "bool",
+                },
+                {
+                  internalType: "string",
+                  name: "visualSymbol",
+                  type: "string",
+                },
+              ],
+              internalType: "struct Kudos.KudosMetadata",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "getKudosReach",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "getMaxPropagationDepth",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "getPropagationNetwork",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "address",
+                  name: "from",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "to",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "timestamp",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "generation",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct Kudos.PropagationRecord[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
               internalType: "address",
-              name: "creator",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "holderGeneration",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
               type: "address",
             },
             {
               internalType: "uint256",
-              name: "supply",
+              name: "",
               type: "uint256",
             },
+          ],
+          name: "holderTokens",
+          outputs: [
             {
               internalType: "uint256",
-              name: "max",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "minShares",
+              name: "",
               type: "uint256",
             },
           ],
@@ -635,80 +887,54 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
-              name: "tokenId",
+              name: "",
               type: "uint256",
+            },
+          ],
+          name: "kudosData",
+          outputs: [
+            {
+              internalType: "string",
+              name: "story",
+              type: "string",
             },
             {
               internalType: "address",
-              name: "account",
+              name: "creator",
               type: "address",
             },
-          ],
-          name: "isCoOwner",
-          outputs: [
+            {
+              internalType: "uint256",
+              name: "maxSupply",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "currentSupply",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "createdAt",
+              type: "uint256",
+            },
             {
               internalType: "bool",
-              name: "",
+              name: "transferable",
               type: "bool",
             },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
             {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
+              internalType: "bool",
+              name: "canPropagate",
+              type: "bool",
             },
-          ],
-          name: "maxSupply",
-          outputs: [
             {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
+              internalType: "string",
+              name: "visualSymbol",
+              type: "string",
             },
           ],
           stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "minSharesForPermission",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-          ],
-          name: "mintAdditional",
-          outputs: [],
-          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -719,6 +945,63 @@ const deployedContracts = {
               internalType: "address",
               name: "",
               type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              internalType: "address[]",
+              name: "recipients",
+              type: "address[]",
+            },
+          ],
+          name: "propagateKudos",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "propagationHistory",
+          outputs: [
+            {
+              internalType: "address",
+              name: "from",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "generation",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -750,7 +1033,7 @@ const deployedContracts = {
             },
             {
               internalType: "uint256[]",
-              name: "values",
+              name: "amounts",
               type: "uint256[]",
             },
             {
@@ -783,7 +1066,7 @@ const deployedContracts = {
             },
             {
               internalType: "uint256",
-              name: "value",
+              name: "amount",
               type: "uint256",
             },
             {
@@ -793,29 +1076,6 @@ const deployedContracts = {
             },
           ],
           name: "safeTransferFrom",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-            {
-              internalType: "bool",
-              name: "canAdd",
-              type: "bool",
-            },
-          ],
-          name: "setAddOwnerPermission",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -842,47 +1102,11 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "string",
-              name: "newBaseURI",
-              type: "string",
-            },
-          ],
-          name: "setBaseURI",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "newMinimum",
-              type: "uint256",
-            },
-          ],
-          name: "setMinSharesForPermission",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "string",
               name: "newuri",
               type: "string",
             },
           ],
-          name: "setTokenURI",
+          name: "setURI",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -909,20 +1133,29 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
+              internalType: "address",
+              name: "from",
+              type: "address",
             },
-          ],
-          name: "tokenSupply",
-          outputs: [
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
             {
               internalType: "uint256",
-              name: "",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "amount",
               type: "uint256",
             },
           ],
-          stateMutability: "view",
+          name: "traditionalTransfer",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -934,6 +1167,29 @@ const deployedContracts = {
             },
           ],
           name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "_canPropagate",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "_transferable",
+              type: "bool",
+            },
+          ],
+          name: "updatePropagationSettings",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -971,151 +1227,7 @@ const deployedContracts = {
         renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
         transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
       },
-      deployedOnBlock: 6,
-    },
-    YourContract: {
-      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_owner",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "greetingSetter",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "newGreeting",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "bool",
-              name: "premium",
-              type: "bool",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "value",
-              type: "uint256",
-            },
-          ],
-          name: "GreetingChange",
-          type: "event",
-        },
-        {
-          inputs: [],
-          name: "greeting",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "owner",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "premium",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "_newGreeting",
-              type: "string",
-            },
-          ],
-          name: "setGreeting",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "totalCounter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "userGreetingCounter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "withdraw",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          stateMutability: "payable",
-          type: "receive",
-        },
-      ],
-      inheritedFunctions: {},
-      deployedOnBlock: 4,
+      deployedOnBlock: 3,
     },
   },
 } as const;
