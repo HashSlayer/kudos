@@ -31,6 +31,7 @@ contract Kudos is ERC1155, Ownable, ReentrancyGuard {
         bool transferable; // Can be traditionally transferred (vs propagation only)
         bool canPropagate; // Can holders distribute to others
         string visualSymbol; // Cultural/visual identifier (color, pattern)
+        string mediaUri; // URI pointing to artwork, image, or other media (IPFS, HTTP, etc.)
     }
 
     struct PropagationRecord {
@@ -111,6 +112,7 @@ contract Kudos is ERC1155, Ownable, ReentrancyGuard {
      * @param maxSupply Maximum number of copies that can exist
      * @param initialRecipients First recipients of this gratitude
      * @param visualSymbol Cultural/visual identifier for the token
+     * @param mediaUri URI pointing to artwork, image, or other media
      * @param _canPropagate Whether holders can distribute to others
      * @param _transferable Whether traditional transfers are allowed
      * @return tokenId The newly created token ID
@@ -120,6 +122,7 @@ contract Kudos is ERC1155, Ownable, ReentrancyGuard {
         uint256 maxSupply,
         address[] memory initialRecipients,
         string memory visualSymbol,
+        string memory mediaUri,
         bool _canPropagate,
         bool _transferable
     ) external nonReentrant returns (uint256) {
@@ -139,7 +142,8 @@ contract Kudos is ERC1155, Ownable, ReentrancyGuard {
             createdAt: block.timestamp,
             transferable: _transferable,
             canPropagate: _canPropagate,
-            visualSymbol: visualSymbol
+            visualSymbol: visualSymbol,
+            mediaUri: mediaUri
         });
 
         // Creator always keeps the first copy (propagation model)

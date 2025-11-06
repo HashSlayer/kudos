@@ -305,8 +305,8 @@ const KudosDiagram: React.FC = () => {
               name="kudosData"
               type="mapping(uint256 → KudosMetadata)"
               description="Complete metadata for each Kudos token"
-              purpose="Stores story, creator, supply limits, and settings per token"
-              example={`kudosData[1].story = 'Thank you for helping me'`}
+              purpose="Stores story, creator, supply limits, settings, and media URI per token"
+              example={`kudosData[1].story = 'Thank you for helping me'; kudosData[1].mediaUri = 'ipfs://QmXxx...'`}
               gradient="bg-gradient-to-r from-blue-900/30 to-indigo-900/30"
               borderColor="border-blue-400"
               isKeyFeature={true}
@@ -438,12 +438,17 @@ const KudosDiagram: React.FC = () => {
                 { type: "uint256", name: "maxSupply", description: "Maximum number of copies that can exist" },
                 { type: "address[]", name: "initialRecipients", description: "First recipients of this gratitude" },
                 { type: "string", name: "visualSymbol", description: "Cultural/visual identifier (wampum-inspired)" },
+                {
+                  type: "string",
+                  name: "mediaUri",
+                  description: "URI pointing to artwork, image, or other media (IPFS recommended)",
+                },
                 { type: "bool", name: "_canPropagate", description: "Can holders distribute to others?" },
                 { type: "bool", name: "_transferable", description: "Are traditional transfers allowed?" },
               ]}
               returns={[{ type: "uint256", description: "tokenId - The newly created token ID" }]}
               workflow={[
-                '1️⃣ Alice: createKudos("Thank you Bob for help!", 100, [Bob, Charlie], "purple", true, false)',
+                '1️⃣ Alice: createKudos("Thank you Bob for help!", 100, [Bob, Charlie], "purple", "ipfs://QmXxx...", true, false)',
                 "2️⃣ Alice receives token #1 (generation 0 - creator)",
                 "3️⃣ Bob receives token #1 (generation 1 - from Alice)",
                 "4️⃣ Charlie receives token #1 (generation 1 - from Alice)",
@@ -838,6 +843,7 @@ const KudosDiagram: React.FC = () => {
               items={[
                 "Show KudosMetadata.story prominently",
                 "Display visualSymbol (wampum-inspired)",
+                "Render mediaUri artwork/images",
                 "Create beautiful gratitude cards",
                 "Preserve narrative context",
               ]}
