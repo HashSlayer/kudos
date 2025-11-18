@@ -1,88 +1,277 @@
-# 🏗 Scaffold-ETH 2
+# 🙏 Kudos - A Distributed Gratitude Protocol
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+> *Inspired by the Indigenous Wampum system of binding relationships and shared memory*
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+## Overview
 
-⚙️ Built using NextJS, RainbowKit, Foundry/Hardhat, Wagmi, Viem, and Typescript.
+Kudos is a blockchain-native social infrastructure for expressing and propagating gratitude through semi-fungible tokens. Unlike traditional NFTs, Kudos tokens are designed to **spread through communities** rather than be hoarded, creating networks of shared acknowledgment and appreciation.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+Built on **Scaffold-ETH 2**, Kudos combines the power of ERC-1155 tokens with a unique propagation mechanism that allows gratitude to multiply as it spreads through social networks.
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+## 🌟 Core Philosophy
 
-## Requirements
+- **Propagation over Transfer**: When you share gratitude, you don't lose yours—it multiplies
+- **Story-First Design**: Every token carries a narrative of appreciation
+- **Network Effects**: Value grows as gratitude spreads through social connections
+- **Cultural Authenticity**: Based on Indigenous wampum principles of reciprocity and collective memory
 
-Before you begin, you need to install the following tools:
+## 🎯 Key Features
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+### 1. **Gratitude Propagation** ⭐
+- **Default Behavior**: Creators and holders KEEP their tokens when distributing
+- **Minting on Distribution**: New tokens are minted (up to supply cap) when propagated
+- **Generation Tracking**: Each distribution is tracked with "hops from origin"
+- **Network Visualization**: Full provenance graph showing how gratitude spread
 
-## Quickstart
+### 2. **Flexible Token Models**
+- **Semi-Fungible**: Multiple holders can own the same gratitude token
+- **Supply Caps**: Creators set maximum circulation to maintain scarcity
+- **Transferable Option**: Enable traditional transfers if desired (disabled by default)
+- **Cultural Symbolism**: Visual identifiers inspired by wampum belt patterns
+- **Media Support**: Optional URI for artwork, images, or other media (IPFS recommended)
 
-To get started with Scaffold-ETH 2, follow the steps below:
+### 3. **Social Graph Analytics**
+- Track propagation depth (degrees of separation)
+- Query holder generation (how many hops from creator)
+- Calculate reach (total unique holders)
+- View complete distribution history
 
-1. Install the latest version of Scaffold-ETH 2
+## 📋 Contract Interface
 
+### Creating Kudos
+
+```solidity
+function createKudos(
+    string memory story,              // "Thank you for mentoring me!"
+    uint256 maxSupply,                // 100 (max holders)
+    address[] memory initialRecipients, // [0xAlice, 0xBob]
+    string memory visualSymbol,       // "purple-blue-gradient" or "🌟"
+    string memory mediaUri,           // "ipfs://QmXxx..." or "https://..."
+    bool canPropagate,                // true (allow others to share)
+    bool transferable                 // false (no selling)
+) external returns (uint256 tokenId)
 ```
-npx create-eth@latest
+
+### Propagating Kudos (PRIMARY METHOD)
+
+```solidity
+function propagateKudos(
+    uint256 tokenId,
+    address[] memory recipients
+) external
 ```
 
-This command will install all the necessary packages and dependencies, so it might take a while.
+**Key Point**: You KEEP your token, recipients GET new ones! 🎉
 
-> [!NOTE]
-> You can also initialize your project with one of our extensions to add specific features or starter-kits. Learn more in our [extensions documentation](https://docs.scaffoldeth.io/extensions/).
+## 🚀 Getting Started
 
-2. Run a local network in the first terminal:
+### Requirements
 
-```
+- **Node.js**: >= 20.18.3
+- **Yarn**: 3.2.3 (included in package.json)
+- **Git**: For cloning the repository
+- **MetaMask** (or other Web3 wallet): For interacting with the contract
+
+### Setup & Development
+
+Kudos is built on **Scaffold-ETH 2**, a Next.js + Hardhat development stack. Here's how to get started:
+
+#### 1. Start Local Blockchain
+
+```bash
 yarn chain
 ```
 
-This command starts a local Ethereum network that runs on your local machine and can be used for testing and development. Learn how to [customize your network configuration](https://docs.scaffoldeth.io/quick-start/environment#1-initialize-a-local-blockchain).
+**What this does:**
+- Starts a local Hardhat network on `http://localhost:8545`
+- Provides 20 test accounts with 10,000 ETH each
+- Creates a fresh blockchain for testing (no data persists)
+- **Keep this running** in a terminal window while developing
 
-3. On a second terminal, deploy the test contract:
+#### 2. Deploy the Kudos Contract
 
-```
+In a new terminal window:
+
+```bash
 yarn deploy
 ```
 
-This command deploys a test smart contract to the local network. You can find more information about how to customize your contract and deployment script in our [documentation](https://docs.scaffoldeth.io/quick-start/environment#2-deploy-your-smart-contract).
+**What this does:**
+- Compiles the Kudos smart contract (`packages/hardhat/contracts/Kudos.sol`)
+- Deploys it to your local blockchain
+- Generates TypeScript types and ABIs for the frontend
+- Updates `packages/nextjs/contracts/deployedContracts.ts` automatically
+- Outputs the contract address: `✅ Kudos deployed to: 0x...`
 
-4. On a third terminal, start your NextJS app:
+#### 3. Start the Frontend
 
-```
+In another terminal window:
+
+```bash
 yarn start
 ```
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+**What this does:**
+- Starts the Next.js development server
+- Opens the app at `http://localhost:3000`
+- Hot-reloads on code changes
+- Enables wallet connection via RainbowKit
+- Provides UI to interact with the Kudos contract
 
-**What's next**:
+**Development Flow:**
+1. Terminal 1: `yarn chain` (keep running)
+2. Terminal 2: `yarn deploy` (run once, or after contract changes)
+3. Terminal 3: `yarn start` (keep running)
 
-Visit the [What's next section of our docs](https://docs.scaffoldeth.io/quick-start/environment#whats-next) to learn how to:
+### Interacting with Kudos
 
-- Edit your smart contracts
-- Edit your deployment scripts
-- Customize your frontend
-- Edit the app config
-- Writing and running tests
-- [Setting up external services and API keys](https://docs.scaffoldeth.io/deploying/deploy-smart-contracts#configuration-of-third-party-services-for-production-grade-apps)
+Once your local environment is running:
 
-## Documentation
+1. **Connect Wallet**: Click "Connect Wallet" in the top right
+2. **Fund Wallet**: Use the faucet button (if on local network) to get test ETH
+3. **Create Kudos**: Navigate to the Create page and fill out the form
+4. **Propagate**: Share your Kudos with others to watch the network grow!
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn all the technical details and guides of Scaffold-ETH 2.
+## 💡 Use Cases & Examples
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+### DAO Contributor Recognition
 
-## Contributing to Scaffold-ETH 2
+Recognize team members for their contributions:
 
-We welcome contributions to Scaffold-ETH 2!
+```javascript
+await kudos.createKudos(
+  "Shipped governance upgrade with zero bugs!",
+  25,                                    // Max 25 people can receive this
+  [contributorAddress],                  // Initial recipient
+  "achievement-gold",                    // Visual symbol
+  "ipfs://QmXxx.../achievement-art.png", // Artwork URI
+  true,                                  // Allow propagation
+  false                                  // No transfers (anti-speculation)
+);
+```
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+### Mentorship Networks
+
+Build gratitude chains in educational settings:
+
+```javascript
+// Teacher creates Kudos for student
+const tokenId = await kudos.createKudos(
+  "Thank you for learning Solidity! Your dedication is inspiring.",
+  10,
+  [studentAddress],
+  "mentorship-blue",
+  "ipfs://QmYyy.../mentorship-card.jpg",
+  true,
+  false
+);
+
+// Student propagates to study group (they keep their token!)
+await kudos.propagateKudos(tokenId, studyGroupAddresses);
+
+// Now the teacher, student, AND study group all have the token!
+```
+
+### Community Appreciation
+
+Show gratitude within organizations:
+
+```javascript
+// Create a Kudos for a community event organizer
+await kudos.createKudos(
+  "Thank you for organizing our Web3 meetup!",
+  100,                                  // Allow up to 100 recipients
+  [organizerAddress],
+  "community-purple",
+  "ipfs://QmZzz.../community-art.png",
+  true,                                 // Let recipients propagate further
+  false
+);
+
+// The organizer can now share this gratitude with volunteers
+// Each volunteer can share with attendees
+// Gratitude spreads exponentially through the community!
+```
+
+### Open Source Contributions
+
+Acknowledge open source contributors:
+
+```javascript
+await kudos.createKudos(
+  "Thank you for your amazing PR that fixed the bug!",
+  50,
+  [contributorAddress],
+  "oss-green",
+  "",                                   // Empty mediaUri is allowed
+  true,
+  false
+);
+```
+
+## 🛠️ Development Commands
+
+### Smart Contract
+
+```bash
+yarn compile          # Compile contracts
+yarn deploy           # Deploy to local network
+yarn test             # Run tests
+yarn hardhat:clean    # Clean artifacts
+```
+
+### Frontend
+
+```bash
+yarn start            # Start dev server (localhost:3000)
+yarn next:build       # Build for production
+yarn lint             # Lint code
+yarn format           # Format code with Prettier
+```
+
+### Testing
+
+```bash
+yarn test            # Run Hardhat tests
+yarn hardhat:fork    # Fork mainnet for testing
+```
+
+## 📚 Project Structure
+
+```
+kudos/
+├── packages/
+│   ├── hardhat/          # Smart contract development
+│   │   ├── contracts/
+│   │   │   └── Kudos.sol # Main Kudos contract
+│   │   ├── deploy/
+│   │   │   └── 00_deploy_kudos.ts
+│   │   └── test/
+│   │
+│   └── nextjs/           # Frontend (Next.js + React)
+│       ├── app/          # App router pages
+│       │   ├── page.tsx  # Home page
+│       │   ├── create/   # Create Kudos page
+│       │   └── my-kudos/ # Dashboard
+│       ├── components/
+│       │   └── kudos/    # Kudos-specific components
+│       └── hooks/
+│           └── scaffold-eth/ # Scaffold hooks
+```
+
+## 🎨 Design Philosophy
+
+Kudos follows a **story-first, propagation-first** design:
+
+- **No Financial UI**: No price charts, trading interfaces, or value displays
+- **Network Visualization**: Always show how gratitude has spread
+- **Celebration Moments**: Animate success states, show reach milestones
+- **Warm Aesthetics**: Use organic shapes, warm colors, gratitude-focused language
+
+## 📜 License
+
+MIT - Built with respect for Indigenous knowledge systems
+
+---
+
+*"Gratitude shared is gratitude multiplied"* 🌱
